@@ -1,8 +1,11 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
+  const apiUrl = process.env.REACT_APP_API_URL;
+  console.log("apiUrl", apiUrl); // apiUrl http://localhost:9001
+
   return (
     <div className="App">
       <header className="App-header">
