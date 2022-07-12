@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 
 // 排除 0 以外的空值
-export const isFalsy = (value) => (value === 0 ? false : !value);
+export const isFalsy = (value: unknown) => (value === 0 ? false : !value);
 
 // 排除对象中值为空的属性
-export const cleanObject = (object) => {
+export const cleanObject = (object: Record<string, any>) => {
   const result = { ...object };
   Object.keys(result).forEach((key) => {
     const value = result[key];
@@ -32,7 +32,7 @@ log();
 */
 
 // 只要value发生变化，就会执行 useEffect 并清除定时器内容，只有在停止输入的delay时间段后才会返回预期的value
-export const useDebounce = (value, delay) => {
+export const useDebounce = <T>(value: T, delay: number) => {
   const [debounceValue, setDebounceValue] = useState(value);
   useEffect(() => {
     // 每次在 value 变化以后，设置一个定时器
@@ -45,7 +45,7 @@ export const useDebounce = (value, delay) => {
   return debounceValue;
 };
 
-export const useMount = (callback) => {
+export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
   }, []);
