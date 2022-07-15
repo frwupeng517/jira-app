@@ -2,6 +2,8 @@ import styled from "@emotion/styled";
 import { Row } from "components/lib";
 import { useAuth } from "context/auth-context";
 import ProjectListScreen from "screens/project-list";
+import { ReactComponent as SoftwareLogo } from "assets/task1.svg";
+import { Button, Dropdown, Menu } from "antd";
 
 /**
  * grid 和 flex 各自的应用场景
@@ -14,17 +16,34 @@ import ProjectListScreen from "screens/project-list";
  * 从内容出发用 flex，从布局出发用 grid
  */
 const AuthenticatedApp = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   return (
     <Container>
       <Header between>
         <HeaderLeft gap>
-          <h2>logo</h2>
+          <SoftwareLogo
+          // width="18rem"
+          // color="rgb(38, 132, 255)"
+          />
           <h2>项目</h2>
           <h2>用户</h2>
         </HeaderLeft>
         <HeaderRight>
-          <button onClick={logout}>登出</button>
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item key="logout">
+                  <Button type="link" onClick={logout}>
+                    登出
+                  </Button>
+                </Menu.Item>
+              </Menu>
+            }
+          >
+            <Button type="link" onClick={(evt) => evt.preventDefault()}>
+              Hi, {user?.name}
+            </Button>
+          </Dropdown>
         </HeaderRight>
       </Header>
       <Main>
@@ -43,7 +62,11 @@ const Container = styled.div`
 `;
 // grid-area 属性指定网格元素在网格布局中的大小和位置，也可以对网格元素进行命名
 // 命名的网格元素可以通过容器的 grid-template-areas 属性来引用
-const Header = styled(Row)``;
+const Header = styled(Row)`
+  padding: 3.2rem;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+  z-index: 1;
+`;
 const HeaderLeft = styled(Row)``;
 const HeaderRight = styled.div``;
 const Main = styled.main``;

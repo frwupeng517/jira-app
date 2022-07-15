@@ -1,3 +1,4 @@
+/* @jsxImportSource @emotion/react */ // 在组件的顶部写这行代码，告知当前组件用了 emotion 行内样式
 import React from "react";
 import { Form, Input, Select } from "antd";
 
@@ -21,13 +22,16 @@ interface SearchPanelProps {
 
 const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
   return (
-    <Form>
-      <div>
+    <Form layout="inline" css={{ marginBottom: "2rem" }}>
+      <Form.Item>
         <Input
           type="text"
           value={param.name}
           onChange={(evt) => setParam({ ...param, name: evt.target.value })}
+          placeholder="项目名"
         />
+      </Form.Item>
+      <Form.Item>
         <Select
           value={param.personId}
           onChange={(value) => setParam({ ...param, personId: value })}
@@ -40,7 +44,7 @@ const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
               </Select.Option>
             ))}
         </Select>
-      </div>
+      </Form.Item>
     </Form>
   );
 };
