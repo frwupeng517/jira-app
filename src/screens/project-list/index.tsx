@@ -4,9 +4,8 @@ import List from "./list";
 import { cleanObject, useMount, useDebounce } from "utils";
 import { useHttp } from "utils/http";
 import styled from "@emotion/styled";
+import { Typography } from "antd";
 
-const apiUrl = process.env.REACT_APP_API_URL;
-console.log("apiUrl", apiUrl);
 const ProjectListScreen = () => {
   const [param, setParam] = useState({
     name: "",
@@ -14,7 +13,9 @@ const ProjectListScreen = () => {
   });
   const [users, setUsers] = useState([]);
   const [list, setList] = useState([]);
-  const debouncedParam = useDebounce(param, 2000);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const debouncedParam = useDebounce(param, 200);
   const http = useHttp();
 
   useMount(() => {
@@ -29,7 +30,14 @@ const ProjectListScreen = () => {
   });
 
   useEffect(() => {
-    http("projects", { data: cleanObject(debouncedParam) }).then(setList);
+    setLoading(true);
+    http("projects", { data: cleanObject(debouncedParam) })
+      .then(setList)
+      .catch((error) => {
+        setList([]);
+        setError(error);
+      })
+      .finally(() => setLoading(false));
     // fetch(
     //   `${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`
     // ).then(async (res) => {
@@ -44,7 +52,10 @@ const ProjectListScreen = () => {
     <Container>
       <h1>项目列表</h1>
       <SearchPanel param={param} setParam={setParam} users={users} />
-      <List users={users} list={list} />
+      {error && (
+        <Typography.Text type="danger">{error.message}</Typography.Text>
+      )}
+      <List users={users} dataSource={list} loading={loading} />
     </Container>
   );
 };
