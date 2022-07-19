@@ -2,35 +2,25 @@ import { Form, Input } from "antd";
 import { useAuth } from "context/auth-context";
 import React from "react";
 import { LongButton } from "unauthenticated-app";
+import { useAsync } from "utils/use-async";
 
-// const apiUrl = process.env.REACT_APP_API_URL;
-
-const LoginScreen = () => {
-  // const login = (param: { username: string, password: string}) => {
-  //   fetch(`${apiUrl}/register`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(param),
-  //   }).then(async (res: Response) => {
-  //     if (res.ok) {}
-  //   })
-  // }
-
+const LoginScreen = ({ onError }: { onError: (error: Error) => void }) => {
   const { login } = useAuth();
+  const { run, isLoading } = useAsync(undefined, { throwOnError: true });
 
-  const handleSubmit = ({
+  const handleSubmit = async ({
     username,
     password,
   }: {
     username: string;
     password: string;
   }) => {
-    // evt.preventDefault();
-    // const username = (evt.currentTarget.elements[0] as HTMLInputElement).value;
-    // const password = (evt.currentTarget.elements[1] as HTMLInputElement).value;
-    login({ username, password });
+    try {
+      await run(login({ username, password }));
+    } catch (error) {
+      // throw可以抛出任何类型的异常,也可以是具体的值，所以其值必须是any或者unknow类型
+      onError(error as Error);
+    }
   };
 
   return (
@@ -48,7 +38,7 @@ const LoginScreen = () => {
         <Input.Password placeholder="密码" />
       </Form.Item>
       <Form.Item>
-        <LongButton type="primary" htmlType="submit">
+        <LongButton type="primary" htmlType="submit" loading={isLoading}>
           登录
         </LongButton>
       </Form.Item>

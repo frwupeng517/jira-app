@@ -2,36 +2,30 @@ import { Form, Input } from "antd";
 import { useAuth } from "context/auth-context";
 import React from "react";
 import { LongButton } from "unauthenticated-app";
+import { useAsync } from "utils/use-async";
 
-// const apiUrl = process.env.REACT_APP_API_URL;
-
-const RegisterScreen = () => {
-  // const login = (param: { username: string, password: string}) => {
-  //   fetch(`${apiUrl}/register`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(param),
-  //   }).then(async (res: Response) => {
-  //     if (res.ok) {}
-  //   })
-  // }
-
+const RegisterScreen = ({ onError }: { onError: (error: Error) => void }) => {
   const { register } = useAuth();
+  const { run, isLoading } = useAsync(undefined, { throwOnError: true });
 
-  const handleSubmit = ({
+  const handleSubmit = async ({
     username,
     password,
+    cpassword,
   }: {
     username: string;
     password: string;
+    cpassword: string;
   }) => {
-    // evt.preventDefault();
-    // console.log("evt", evt);
-    // const username = (evt.currentTarget.elements[0] as HTMLInputElement).value;
-    // const password = (evt.currentTarget.elements[1] as HTMLInputElement).value;
-    register({ username, password });
+    if (password !== cpassword) {
+      onError(new Error("请确认两次输入的密码是否相同！"));
+      return;
+    }
+    try {
+      await run(register({ username, password }));
+    } catch (error) {
+      onError(error as Error);
+    }
   };
 
   return (
@@ -48,8 +42,14 @@ const RegisterScreen = () => {
       >
         <Input.Password placeholder="密码" />
       </Form.Item>
+      <Form.Item
+        name="cpassword"
+        rules={[{ required: true, message: "请输入确认密码" }]}
+      >
+        <Input.Password placeholder="确认密码" />
+      </Form.Item>
       <Form.Item>
-        <LongButton type="primary" htmlType="submit">
+        <LongButton type="primary" htmlType="submit" loading={isLoading}>
           注册
         </LongButton>
       </Form.Item>
