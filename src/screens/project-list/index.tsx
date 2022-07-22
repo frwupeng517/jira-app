@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import SearchPanel from "./search-panel";
 import List from "./list";
-import { useDebounce } from "utils";
+import { useDebounce, useDocumentTitle } from "utils";
 import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
+// import { Helmet } from "react-helmet";
 
 const ProjectListScreen = () => {
   const [param, setParam] = useState({
@@ -15,9 +16,13 @@ const ProjectListScreen = () => {
   const debouncedParam = useDebounce(param, 200);
   const { data: list, error, isLoading } = useProjects(debouncedParam);
   const { data: users } = useUsers();
+  useDocumentTitle("项目列表");
 
   return (
     <Container>
+      {/* <Helmet>
+        <title>项目列表</title>
+      </Helmet> */}
       <h1>项目列表</h1>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error && (

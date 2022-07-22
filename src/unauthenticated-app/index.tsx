@@ -1,17 +1,23 @@
 import { Button, Card, Divider, Typography } from "antd";
 import { useState } from "react";
+// import { Helmet } from "react-helmet";
 import styled from "@emotion/styled";
 import LoginScreen from "./login";
 import RegisterScreen from "./register";
 import logo from "assets/jira.svg";
 import left from "assets/left.svg";
 import right from "assets/right.svg";
+import { useDocumentTitle } from "utils";
 
 const UnauthenticatedApp = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  useDocumentTitle("请登录或注册以继续");
   return (
     <Container>
+      {/* <Helmet>
+        <title>请登录或注册以继续</title>
+      </Helmet> */}
       <Header />
       <Background />
       <ShadowCard>
