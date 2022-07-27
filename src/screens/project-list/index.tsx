@@ -23,7 +23,7 @@ const ProjectListScreen = () => {
   // const [keys] = useState(["name", "personId"]);
   // 如果像上面这样直接把keys的初始值设成string[]，那param的类型就变成了 {[x: string]: string}，必须显示的指定具体的类型才能避免传入的值变成 string
   const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
-  const [param] = useUrlQueryParam(keys);
+  const [param, setSearchParams] = useUrlQueryParam(keys);
   const debouncedParam = useDebounce(param, 200);
   const { data: list, error, isLoading } = useProjects(debouncedParam);
   const { data: users } = useUsers();
@@ -37,7 +37,11 @@ const ProjectListScreen = () => {
       </Helmet> */}
       {/* <Test /> */}
       <h1>项目列表</h1>
-      <SearchPanel param={param} setParam={setParam} users={users || []} />
+      <SearchPanel
+        param={param}
+        setParam={setSearchParams}
+        users={users || []}
+      />
       {error && (
         <Typography.Text type="danger">{error.message}</Typography.Text>
       )}
@@ -48,7 +52,7 @@ const ProjectListScreen = () => {
 
 export default ProjectListScreen;
 
-ProjectListScreen.whyDidYouRender = true;
+ProjectListScreen.whyDidYouRender = false;
 
 const Container = styled.div`
   padding: 3.2rem;

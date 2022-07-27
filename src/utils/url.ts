@@ -1,5 +1,6 @@
+import { cleanObject } from "./index";
 import { useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { URLSearchParamsInit, useSearchParams } from "react-router-dom";
 
 /**
  * 返回页面url中，指定键的参数值
@@ -15,7 +16,13 @@ export const useUrlQueryParam = <T extends string>(keys: T[]) => {
       // TODO 如果这里直接把 keys 添加到依赖项，就会造成无限渲染，除非keys是一个state
       [searchParams, keys]
     ),
-    setSearchParams,
+    (params: Partial<{ [key in T]: unknown }>) => {
+      const o = cleanObject({
+        ...Object.fromEntries(searchParams),
+        ...params,
+      }) as URLSearchParamsInit;
+      return setSearchParams(o);
+    },
   ] as const;
 };
 
