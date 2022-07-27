@@ -1,9 +1,11 @@
 /* @jsxImportSource @emotion/react */ // 在组件的顶部写这行代码，告知当前组件用了 emotion 行内样式
 import React from "react";
-import { Form, Input, Select } from "antd";
+import { Form, Input } from "antd";
+import { Project } from "./list";
+import { UserSelect } from "components/user-select";
 
 export interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
   title: string;
@@ -13,10 +15,7 @@ export interface User {
 
 interface SearchPanelProps {
   users: User[];
-  param: {
-    name: string;
-    personId: string;
-  };
+  param: Partial<Pick<Project, "name" | "personId">>;
   setParam: (param: SearchPanelProps["param"]) => void;
 }
 
@@ -32,18 +31,11 @@ const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
         />
       </Form.Item>
       <Form.Item>
-        <Select
+        <UserSelect
           value={param.personId}
+          defaultOptionName="负责人"
           onChange={(value) => setParam({ ...param, personId: value })}
-        >
-          <Select.Option value={""}>负责人</Select.Option>
-          {Array.isArray(users) &&
-            users.map((item) => (
-              <Select.Option value={item.id} key={item.id}>
-                {item.name}
-              </Select.Option>
-            ))}
-        </Select>
+        />
       </Form.Item>
     </Form>
   );

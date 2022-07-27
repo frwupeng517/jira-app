@@ -14,7 +14,8 @@ export const useUrlQueryParam = <T extends string>(keys: T[]) => {
           return { ...prev, [key]: searchParams.get(key) || "" };
         }, {} as { [key in T]: string }),
       // TODO 如果这里直接把 keys 添加到依赖项，就会造成无限渲染，除非keys是一个state
-      [searchParams, keys]
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [searchParams]
     ),
     (params: Partial<{ [key in T]: unknown }>) => {
       const o = cleanObject({
