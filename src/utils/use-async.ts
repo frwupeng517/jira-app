@@ -1,3 +1,4 @@
+import { useMountedRef } from "./index";
 import { useState } from "react";
 
 interface State<D> {
@@ -39,6 +40,7 @@ export const useAsync = <D>(
     });
   // useState 直接传入函数的含义是:惰性初始化,所以,要用useState保存函数,不能直接传入函数
   const [refresh, setRefresh] = useState(() => () => {});
+  const mountedRef = useMountedRef();
 
   // run 用来触发异步请求
   const run = (
@@ -57,7 +59,9 @@ export const useAsync = <D>(
     setState({ ...state, stat: "loading" });
     return promise
       .then((data) => {
-        setData(data);
+        if (mountedRef.current) {
+          setData(data);
+        }
         return data;
       })
       .catch((error) => {
