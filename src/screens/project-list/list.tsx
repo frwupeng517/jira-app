@@ -1,4 +1,5 @@
-import { Table, TableProps } from "antd";
+import { Dropdown, Menu, Table, TableProps } from "antd";
+import { ButtonNoPadding } from "components/lib";
 import { Pin } from "components/pin";
 import dayjs from "dayjs";
 import React from "react";
@@ -18,6 +19,7 @@ export interface Project {
 interface ListProps extends TableProps<Project> {
   users: User[];
   refresh?: () => void;
+  setProjectModalVisible: (isOpen: boolean) => void;
 }
 
 const List = ({ users, dataSource, ...props }: ListProps) => {
@@ -69,6 +71,28 @@ const List = ({ users, dataSource, ...props }: ListProps) => {
                 : "无"}
             </span>
           ),
+        },
+        {
+          render: (_, record) => {
+            return (
+              <Dropdown
+                overlay={
+                  <Menu>
+                    <Menu.Item key="edit">
+                      <ButtonNoPadding
+                        type="link"
+                        onClick={() => props.setProjectModalVisible(true)}
+                      >
+                        编辑
+                      </ButtonNoPadding>
+                    </Menu.Item>
+                  </Menu>
+                }
+              >
+                <ButtonNoPadding type="link">...</ButtonNoPadding>
+              </Dropdown>
+            );
+          },
         },
       ]}
       dataSource={dataSource}
