@@ -37,12 +37,23 @@ export const useAsync = <D>(
       stat: "error",
       data: null,
     });
+  // useState 直接传入函数的含义是:惰性初始化,所以,要用useState保存函数,不能直接传入函数
+  const [refresh, setRefresh] = useState(() => () => {});
 
   // run 用来触发异步请求
-  const run = (promise: Promise<D>) => {
+  const run = (
+    promise: Promise<D>,
+    runConfig?: { refresh: () => Promise<D> }
+  ) => {
+    console.log("runConfig", runConfig);
     if (!promise || !promise.then) {
       throw new Error("请传入 Promise 类型数据");
     }
+    setRefresh(() => () => {
+      if (runConfig?.refresh) {
+        run(runConfig?.refresh(), runConfig);
+      }
+    });
     setState({ ...state, stat: "loading" });
     return promise
       .then((data) => {
@@ -67,6 +78,8 @@ export const useAsync = <D>(
     run,
     setData,
     setError,
+    // refresh 被调用时重新跑一遍run, 触发 state 更新
+    refresh,
     ...state,
   };
 };

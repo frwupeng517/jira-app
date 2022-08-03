@@ -6,8 +6,10 @@ import { Project } from "./../screens/project-list/list";
 export const useProjects = (params?: Partial<Project>) => {
   const http = useHttp();
   const { run, ...result } = useAsync<Project[]>();
+  const fetchProjects = () =>
+    http("projects", { data: cleanObject(params || {}) });
   useEffect(() => {
-    run(http("projects", { data: cleanObject(params || {}) }));
+    run(fetchProjects(), { refresh: fetchProjects });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
   return result;
