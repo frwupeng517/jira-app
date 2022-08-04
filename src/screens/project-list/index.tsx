@@ -3,16 +3,14 @@ import SearchPanel from "./search-panel";
 import List from "./list";
 import { useDebounce, useDocumentTitle } from "utils";
 import styled from "@emotion/styled";
-import { Button, Row, Typography } from "antd";
+import { Row, Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useProjectSearchParams } from "./util";
 // import { Test } from "./test";
 // import { Helmet } from "react-helmet";
 
-const ProjectListScreen = (props: {
-  setProjectModalVisible: (isOpen: boolean) => void;
-}) => {
+const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
   // const [, setParam] = useState({
   //   name: "",
   //   personId: "",
@@ -44,9 +42,7 @@ const ProjectListScreen = (props: {
       {/* <Test /> */}
       <Row justify="space-between" align="middle">
         <h1>项目列表</h1>
-        <Button type="link" onClick={() => props.setProjectModalVisible(true)}>
-          创建项目
-        </Button>
+        {props.projectButton}
       </Row>
       <SearchPanel
         param={param}
@@ -61,7 +57,7 @@ const ProjectListScreen = (props: {
         dataSource={list || []}
         loading={isLoading}
         refresh={refresh}
-        setProjectModalVisible={props.setProjectModalVisible}
+        projectButton={props.projectButton}
       />
     </Container>
   );

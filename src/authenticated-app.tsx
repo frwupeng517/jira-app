@@ -26,7 +26,16 @@ const AuthenticatedApp = () => {
   const [projectModalVisible, setProjectModalVisible] = useState(false);
   return (
     <Container>
-      <PageHeader setProjectModalVisible={setProjectModalVisible} />
+      <PageHeader
+        projectButton={
+          <ButtonNoPadding
+            type="link"
+            onClick={() => setProjectModalVisible(true)}
+          >
+            创建项目
+          </ButtonNoPadding>
+        }
+      />
       <Main>
         <Router>
           <Routes>
@@ -34,7 +43,14 @@ const AuthenticatedApp = () => {
               path="/projects"
               element={
                 <ProjectListScreen
-                  setProjectModalVisible={setProjectModalVisible}
+                  projectButton={
+                    <ButtonNoPadding
+                      type="link"
+                      onClick={() => setProjectModalVisible(true)}
+                    >
+                      创建项目
+                    </ButtonNoPadding>
+                  }
                 />
               }
             />
@@ -51,9 +67,7 @@ const AuthenticatedApp = () => {
   );
 };
 
-const PageHeader = (props: {
-  setProjectModalVisible: (isOpen: boolean) => void;
-}) => {
+const PageHeader = (props: { projectButton: JSX.Element }) => {
   return (
     <Header between>
       <HeaderLeft gap>
@@ -63,7 +77,7 @@ const PageHeader = (props: {
           // color="rgb(38, 132, 255)"
           />
         </ButtonNoPadding>
-        <ProjectPopover setProjectModalVisible={props.setProjectModalVisible} />
+        <ProjectPopover {...props} />
         <span>用户</span>
       </HeaderLeft>
       <HeaderRight>
