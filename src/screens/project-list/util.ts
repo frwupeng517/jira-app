@@ -3,7 +3,6 @@ import { useUrlQueryParam } from "utils/url";
 
 export const useProjectSearchParams = () => {
   const [param, setSearchParams] = useUrlQueryParam(["name", "personId"]);
-  console.log("111");
   return [
     useMemo(
       () => ({ ...param, personId: Number(param.personId) || undefined }),
@@ -11,4 +10,13 @@ export const useProjectSearchParams = () => {
     ),
     setSearchParams,
   ] as const;
+};
+
+export const useProjectModal = () => {
+  const [{ projectCreate }, setProjectCreate] = useUrlQueryParam([
+    "projectCreate",
+  ]);
+  const open = () => setProjectCreate({ projectCreate: true });
+  const close = () => setProjectCreate({ projectCreate: undefined });
+  return { projectModalOpen: projectCreate === "true", open, close };
 };
