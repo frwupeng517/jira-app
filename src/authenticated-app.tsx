@@ -8,7 +8,6 @@ import ProjectScreen from "screens/project";
 import { ReactComponent as SoftwareLogo } from "assets/task1.svg";
 import { Button, Dropdown, Menu } from "antd";
 import { resetRoute } from "utils";
-import { useState } from "react";
 import { ProjectModal } from "screens/project-list/project-modal";
 import { ProjectPopover } from "components/project-popover";
 
@@ -23,51 +22,24 @@ import { ProjectPopover } from "components/project-popover";
  * 从内容出发用 flex，从布局出发用 grid
  */
 const AuthenticatedApp = () => {
-  const [projectModalVisible, setProjectModalVisible] = useState(false);
   return (
     <Container>
-      <PageHeader
-        projectButton={
-          <ButtonNoPadding
-            type="link"
-            onClick={() => setProjectModalVisible(true)}
-          >
-            创建项目
-          </ButtonNoPadding>
-        }
-      />
+      <PageHeader />
       <Main>
         <Router>
           <Routes>
-            <Route
-              path="/projects"
-              element={
-                <ProjectListScreen
-                  projectButton={
-                    <ButtonNoPadding
-                      type="link"
-                      onClick={() => setProjectModalVisible(true)}
-                    >
-                      创建项目
-                    </ButtonNoPadding>
-                  }
-                />
-              }
-            />
+            <Route path="/projects" element={<ProjectListScreen />} />
             <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
             <Route path="*" element={<Navigate to="/projects" replace />} />
           </Routes>
         </Router>
       </Main>
-      <ProjectModal
-        projectModalVisible={projectModalVisible}
-        onClose={() => setProjectModalVisible(false)}
-      />
+      <ProjectModal />
     </Container>
   );
 };
 
-const PageHeader = (props: { projectButton: JSX.Element }) => {
+const PageHeader = () => {
   return (
     <Header between>
       <HeaderLeft gap>
@@ -77,7 +49,7 @@ const PageHeader = (props: { projectButton: JSX.Element }) => {
           // color="rgb(38, 132, 255)"
           />
         </ButtonNoPadding>
-        <ProjectPopover {...props} />
+        <ProjectPopover />
         <span>用户</span>
       </HeaderLeft>
       <HeaderRight>

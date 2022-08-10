@@ -7,10 +7,13 @@ import { Row, Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useProjectSearchParams } from "./util";
+import { ButtonNoPadding } from "components/lib";
+import { projectListActions } from "./project-list.slice";
+import { useDispatch } from "react-redux";
 // import { Test } from "./test";
 // import { Helmet } from "react-helmet";
 
-const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
+const ProjectListScreen = () => {
   // const [, setParam] = useState({
   //   name: "",
   //   personId: "",
@@ -30,6 +33,7 @@ const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
     isLoading,
     refresh,
   } = useProjects(useDebounce(param, 200));
+  const dispatch = useDispatch();
   const { data: users } = useUsers();
   // console.log("useUrlQueryParam", useUrlQueryParam(["name"]));
   useDocumentTitle("项目列表");
@@ -42,7 +46,12 @@ const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
       {/* <Test /> */}
       <Row justify="space-between" align="middle">
         <h1>项目列表</h1>
-        {props.projectButton}
+        <ButtonNoPadding
+          type="link"
+          onClick={() => dispatch(projectListActions.openProjectModal())}
+        >
+          创建项目
+        </ButtonNoPadding>
       </Row>
       <SearchPanel
         param={param}
@@ -57,7 +66,6 @@ const ProjectListScreen = (props: { projectButton: JSX.Element }) => {
         dataSource={list || []}
         loading={isLoading}
         refresh={refresh}
-        projectButton={props.projectButton}
       />
     </Container>
   );
