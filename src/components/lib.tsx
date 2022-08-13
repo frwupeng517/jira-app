@@ -40,9 +40,22 @@ export const FullPageLoading = () => (
 export const FullPageErrorFallback = ({ error }: { error: Error | null }) => (
   <FullPage>
     <DevTools />
-    <Typography.Text type="danger">{error?.message}</Typography.Text>
+    <ErrorBox error={error} />
   </FullPage>
 );
+
+// 类型守卫
+// 类型保护函数：某些判断可能不是一条语句能够搞定的，需要更多复杂的逻辑，适合封装到一个函数内
+// 注意：类型保护函数的返回值是一个 “类型谓词”
+const isError = (value: any): value is Error => value?.message;
+
+export const ErrorBox = ({ error }: { error: unknown }) => {
+  // if (error?.message) {
+  if (isError(error)) {
+    return <Typography.Text type="danger">{error.message}</Typography.Text>;
+  }
+  return null;
+};
 
 export const ButtonNoPadding = styled(Button)`
   padding: 0;

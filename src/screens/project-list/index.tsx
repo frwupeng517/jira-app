@@ -7,7 +7,7 @@ import { Row, Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { useProjectModal, useProjectSearchParams } from "./util";
-import { ButtonNoPadding } from "components/lib";
+import { ButtonNoPadding, ErrorBox } from "components/lib";
 // import { Test } from "./test";
 // import { Helmet } from "react-helmet";
 
@@ -25,12 +25,7 @@ const ProjectListScreen = () => {
   // 如果像上面这样直接把keys的初始值设成string[]，那param的类型就变成了 {[x: string]: string}，必须显示的指定具体的类型才能避免传入的值变成 string
   // const [keys] = useState<("name" | "personId")[]>(["name", "personId"]);
   const [param, setSearchParams] = useProjectSearchParams();
-  const {
-    data: list,
-    error,
-    isLoading,
-    refresh,
-  } = useProjects(useDebounce(param, 200));
+  const { data: list, error, isLoading } = useProjects(useDebounce(param, 200));
   const { data: users } = useUsers();
   const { open } = useProjectModal();
   // console.log("useUrlQueryParam", useUrlQueryParam(["name"]));
@@ -53,15 +48,8 @@ const ProjectListScreen = () => {
         setParam={setSearchParams}
         users={users || []}
       />
-      {error && (
-        <Typography.Text type="danger">{error.message}</Typography.Text>
-      )}
-      <List
-        users={users || []}
-        dataSource={list || []}
-        loading={isLoading}
-        refresh={refresh}
-      />
+      <ErrorBox error={error} />
+      <List users={users || []} dataSource={list || []} loading={isLoading} />
     </Container>
   );
 };
