@@ -1,3 +1,4 @@
+import { useProjectSearchParams } from "./../screens/project-list/util";
 import { cleanObject } from "utils";
 import { useCallback, useEffect } from "react";
 import { useAsync } from "./use-async";
@@ -33,6 +34,8 @@ export const useEditProject = () => {
   // };
   // return { mutate, ...asyncResult };
   const queryClient = useQueryClient();
+  // const [searchParams] = useProjectSearchParams();
+  // const queryKey = ["projects", searchParams];
   return useMutation(
     (param: Partial<Project>) =>
       http(`projects/${param.id}`, {
@@ -41,6 +44,27 @@ export const useEditProject = () => {
       }),
     {
       onSuccess: () => queryClient.invalidateQueries("projects"),
+      /*
+      // 使用 react-query 实现乐观更新
+      // mutate 发生时立马调用
+      async onMutate(target) {
+        console.log("111");
+        const previousItems = queryClient.getQueryData(queryKey);
+        queryClient.setQueryData(queryKey, (old?: Project[]) => {
+          return (
+            old?.map((project) =>
+              project.id === target.id ? { ...project, ...target } : project
+            ) || []
+          );
+        });
+        return { previousItems };
+      },
+      // 出错时回滚掉上一步擅自修改的内容
+      onError(error, newItem, context) {
+        console.log("222");
+        queryClient.setQueryData(queryKey, context?.previousItems);
+      },
+      */
     }
   );
 };
