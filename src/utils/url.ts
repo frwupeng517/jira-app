@@ -12,7 +12,6 @@ export const useUrlQueryParam = <T extends string>(keys: T[]) => {
     useMemo(
       () =>
         keys.reduce((prev, key) => {
-          console.log("key", key);
           return { ...prev, [key]: searchParams.get(key) || "" };
         }, {} as { [key in T]: string }),
       // TODO 如果这里直接把 keys 添加到依赖项，就会造成无限渲染，除非keys是一个state

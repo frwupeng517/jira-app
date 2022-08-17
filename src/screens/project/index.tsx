@@ -26,4 +26,12 @@ const ProjectScreen = () => {
   );
 };
 
+/*
+路由的栈结构：
+['projects', 'projects/6', window.location.pathname + '/kanban']
+
+上面通过 Navigate 指定的默认路由，如果不指定 replace 属性，点击浏览器回退按钮时就无法返回，始终停留在看板页面
+原因就是直接回退到 projects/6 时会触发 window.location.pathname + '/kanban' 这个路由，就算再点返回也会持续跳转
+*/
+
 export default ProjectScreen;

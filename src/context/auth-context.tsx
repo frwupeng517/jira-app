@@ -1,10 +1,11 @@
 import React, { ReactNode } from "react";
 import * as auth from "auth-provider";
-import { User } from "screens/project-list/search-panel";
 import { http } from "utils/http";
 import { useMount } from "utils";
 import { useAsync } from "utils/use-async";
 import { FullPageErrorFallback, FullPageLoading } from "components/lib";
+import { useQueryClient } from "react-query";
+import { User } from "types/user";
 
 interface AuthForm {
   username: string;
@@ -42,10 +43,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     run,
     setData: setUser,
   } = useAsync<User | null>();
+  const queryClient = useQueryClient();
 
   const login = (form: AuthForm) => auth.login(form).then(setUser);
   const register = (form: AuthForm) => auth.register(form).then(setUser);
-  const logout = () => auth.logout().then(() => setUser(null));
+  const logout = () =>
+    auth.logout().then(() => {
+      setUser(null);
+      // 清缓存
+      queryClient.clear();
+    });
 
   // 用于刷新页面时，如果已经存在token就调接口查询用户信息，避免页面内容因为刷新而丢失
   useMount(() => {

@@ -70,7 +70,6 @@ export const useAsync = <D>(
   // run 用来触发异步请求
   const run = useCallback(
     (promise: Promise<D>, runConfig?: { refresh: () => Promise<D> }) => {
-      console.log("runConfig", runConfig);
       if (!promise || !promise.then) {
         throw new Error("请传入 Promise 类型数据");
       }

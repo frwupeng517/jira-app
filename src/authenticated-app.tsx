@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { useAuth } from "context/auth-context";
 import ProjectListScreen from "screens/project-list";
 import ProjectScreen from "screens/project";
-import { ReactComponent as SoftwareLogo } from "assets/task1.svg";
+import { ReactComponent as SoftwareLogo } from "assets/jira.svg";
 import { Button, Dropdown, Menu } from "antd";
 import { resetRoute } from "utils";
 import { ProjectModal } from "screens/project-list/project-modal";
@@ -43,7 +43,11 @@ const PageHeader = () => {
   return (
     <Header between>
       <HeaderLeft gap>
-        <ButtonNoPadding type="link" onClick={resetRoute}>
+        <ButtonNoPadding
+          type="link"
+          onClick={resetRoute}
+          style={{ height: "100%" }}
+        >
           <SoftwareLogo
           // width="18rem"
           // color="rgb(38, 132, 255)"

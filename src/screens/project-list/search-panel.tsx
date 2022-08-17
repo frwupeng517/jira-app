@@ -1,17 +1,9 @@
 /* @jsxImportSource @emotion/react */ // 在组件的顶部写这行代码，告知当前组件用了 emotion 行内样式
 import React from "react";
 import { Form, Input } from "antd";
-import { Project } from "./list";
 import { UserSelect } from "components/user-select";
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  title: string;
-  organization: string;
-  token: string;
-}
+import { Project } from "types/project";
+import { User } from "types/user";
 
 interface SearchPanelProps {
   users: User[];

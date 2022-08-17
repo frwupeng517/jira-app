@@ -3,8 +3,8 @@ import { cleanObject } from "utils";
 import { useCallback, useEffect } from "react";
 import { useAsync } from "./use-async";
 import { useHttp } from "utils/http";
-import { Project } from "./../screens/project-list/list";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { Project } from "types/project";
 export const useProjects = (params?: Partial<Project>) => {
   const http = useHttp();
   // const { run, ...result } = useAsync<Project[]>();

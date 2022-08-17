@@ -31,7 +31,7 @@ export const useProjectModal = () => {
     // setEditingProjectId({ editingProjectId: id });
     setUrlParams({ projectCreate: true, editingProjectId: id });
   return {
-    projectModalOpen: projectCreate === "true" || !!editingProject,
+    projectModalOpen: projectCreate === "true" || !!editingProjectId,
     open,
     close,
     startEdit,

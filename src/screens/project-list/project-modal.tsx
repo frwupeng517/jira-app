@@ -24,12 +24,21 @@ export const ProjectModal = () => {
       close();
     });
   };
+  const onClose = () => {
+    form.resetFields();
+    close();
+  };
   const title = editingProject ? "编辑项目" : "创建项目";
   useEffect(() => {
     form.setFieldsValue(editingProject);
   }, [editingProject, form]);
   return (
-    <Drawer forceRender width="100%" visible={projectModalOpen} onClose={close}>
+    <Drawer
+      forceRender
+      width="100%"
+      visible={projectModalOpen}
+      onClose={onClose}
+    >
       <Container>
         {isLoading ? (
           <Spin size="large" />
