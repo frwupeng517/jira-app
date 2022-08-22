@@ -16,14 +16,14 @@ const ProjectScreen = () => {
   return (
     <Container>
       <Aside>
-        <Menu mode="inline" selectedKeys={[routeType]}>
-          <Menu.Item key="kanban">
-            <Link to="kanban">看板</Link>
-          </Menu.Item>
-          <Menu.Item key="task">
-            <Link to="epic">任务组</Link>
-          </Menu.Item>
-        </Menu>
+        <Menu
+          mode="inline"
+          selectedKeys={[routeType]}
+          items={[
+            { label: <Link to="kanban">看板</Link>, key: "kanban" },
+            { label: <Link to="epic">任务组</Link>, key: "task" },
+          ]}
+        />
       </Aside>
       <Main>
         <Routes>
@@ -50,10 +50,12 @@ const Aside = styled.aside`
 const Main = styled.div`
   display: flex;
   box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 `;
 const Container = styled.div`
   display: grid;
   grid-template-columns: 16rem 1fr;
+  overflow: hidden;
 `;
 
 /*
