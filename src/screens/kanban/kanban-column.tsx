@@ -11,6 +11,8 @@ import { Task } from "types/task";
 import { Mark } from "components/mark";
 import { useDeleteKanban } from "utils/kanban";
 import { Row } from "components/lib";
+import React from "react";
+import { Drag, Drop, DropChild } from "components/drag-and-drop";
 
 const TaskTypeIcon = ({ id }: { id: number }) => {
   const { data: taskTypes } = useTaskTypes();
@@ -36,24 +38,41 @@ const TaskCard = ({ task }: { task: Task }) => {
   );
 };
 
-export const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
+export const KanbanColumn = React.forwardRef<
+  HTMLDivElement,
+  { kanban: Kanban }
+>(({ kanban, ...props }, ref) => {
   const { data: allTasks } = useTasks(useTasksSearchParams());
   const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
   return (
-    <Container>
+    <Container {...props} ref={ref}>
       <Row between>
         <h3>{kanban.name}</h3>
         <More kanban={kanban}></More>
       </Row>
       <TasksContainer>
-        {tasks?.map((task) => (
-          <TaskCard task={task} key={task.id} />
-        ))}
+        <Drop type="row" direction="vertical" droppableId={String(kanban.id)}>
+          {/* 指定一个最小高度，防止在看板为空时，拖拽异常 */}
+          <DropChild style={{ minHeight: 5 }}>
+            {tasks?.map((task, taskIndex) => (
+              <Drag
+                key={task.id}
+                index={taskIndex}
+                draggableId={`task${task.id}`}
+              >
+                {/* 这里使用一个原生的div标签来转发 TaskCard 自定义组件的ref，也可以在自定义 TaskCard 时用React.forwardRef 来进行转发，例如 KanbanColumn 那样实现 */}
+                <div>
+                  <TaskCard task={task} key={task.id} />
+                </div>
+              </Drag>
+            ))}
+          </DropChild>
+        </Drop>
         <CreateTask kanbanId={kanban.id} />
       </TasksContainer>
     </Container>
   );
-};
+});
 
 const More = ({ kanban }: { kanban: Kanban }) => {
   const { mutateAsync } = useDeleteKanban(useKanbansQueryKey());

@@ -12,12 +12,12 @@ const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container);
 loadServer(() =>
   root.render(
-    <React.StrictMode>
-      <AppProviders>
-        <DevTools />
-        <App />
-      </AppProviders>
-    </React.StrictMode>
+    // <React.StrictMode>
+    <AppProviders>
+      <DevTools />
+      <App />
+    </AppProviders>
+    // </React.StrictMode>
   )
 );
 
