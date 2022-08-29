@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Typography } from "antd";
+import { Button, Card, Divider } from "antd";
 import { useState } from "react";
 // import { Helmet } from "react-helmet";
 import styled from "@emotion/styled";
