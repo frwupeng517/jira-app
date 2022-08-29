@@ -63,6 +63,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
+    "@testing-library/react-hooks": "^8.0.1",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-helmet": "^6.1.5",
     "@welldone-software/why-did-you-render": "^7.0.1",
@@ -70,6 +71,7 @@
     "gh-pages": "^4.0.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
+    "msw": "^0.45.0",
     "prettier": "2.7.1"
   },
   "lint-staged": {
