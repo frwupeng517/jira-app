@@ -11,7 +11,7 @@ export const ProjectModal = () => {
     useProjectModal();
   const useMutateProject = editingProject ? useEditProject : useAddProject;
 
-  const { mutateAsync, error } = useMutateProject();
+  const { mutateAsync, error, isLoading: mutateLoading } = useMutateProject();
   const [form] = Form.useForm();
   const onFinish = (formValues: {
     name: string;

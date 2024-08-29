@@ -17,7 +17,9 @@ export const useProjectModal = () => {
   const [{ projectCreate }, setProjectCreate] = useUrlQueryParam([
     "projectCreate",
   ]);
-  const [{ editingProjectId }] = useUrlQueryParam(["editingProjectId"]);
+  const [{ editingProjectId }, setEditingProjectId] = useUrlQueryParam([
+    "editingProjectId",
+  ]);
   const { data: editingProject, isLoading } = useProject(
     Number(editingProjectId)
   );
